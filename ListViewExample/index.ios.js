@@ -12,16 +12,19 @@ import {
   View,
   Image
 } from 'react-native';
-import mockdata from './mockdata'
+import mockdata from './mockdata';
 
 class ListViewExample extends Component {
   render() {
     var data = mockdata[0];
      return (
        <View style={styles.container}>
-         <Text>{data.trackName}</Text>
-         <Text>{data.collectionName}</Text>
-         <Image source={{uri: data.artworkUrl60}} />
+         <Image source={{uri: data.artworkUrl60}}
+           style={styles.thumbnail}/>
+         <View style={styles.rightContainer}>
+           <Text style={styles.song}>{data.trackName}</Text>
+           <Text style={styles.album}>{data.collectionName}</Text>
+         </View>
        </View>
      );
   }
@@ -29,20 +32,26 @@ class ListViewExample extends Component {
 
 const styles = StyleSheet.create({
   container: {
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#F5FCFF',
+  },
+  rightContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
-  welcome: {
+  song: {
     fontSize: 20,
+    marginBottom: 8,
     textAlign: 'center',
-    margin: 10,
   },
-  instructions: {
+  album: {
     textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  },
+  thumbnail: {
+    width: 60,
+    height: 60,
   },
 });
 
