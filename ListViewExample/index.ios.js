@@ -10,23 +10,40 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  ListView,
 } from 'react-native';
 import mockdata from './mockdata';
 
 class ListViewExample extends Component {
+  constructor(props){
+    super(props);
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = { dataSource: ds.cloneWithRows(mockdata),
+    }
+  }
+
   render() {
-    var data = mockdata[0];
      return (
-       <View style={styles.container}>
-         <Image source={{uri: data.artworkUrl60}}
-           style={styles.thumbnail}/>
-         <View style={styles.rightContainer}>
-           <Text style={styles.song}>{data.trackName}</Text>
-           <Text style={styles.album}>{data.collectionName}</Text>
-         </View>
-       </View>
+       <ListView
+       dataSource={this.state.dataSource}
+       renderRow={this.renderSong}
+       style={styles.listView}
+       />
      );
+  }
+
+  renderSong(data){
+    return (
+    <View style={styles.container}>
+      <Image source={{uri: data.artworkUrl60}}
+        style={styles.thumbnail}/>
+      <View style={styles.rightContainer}>
+        <Text style={styles.song}>{data.trackName}</Text>
+        <Text style={styles.album}>{data.collectionName}</Text>
+      </View>
+    </View>
+  )
   }
 }
 
@@ -41,17 +58,22 @@ const styles = StyleSheet.create({
   rightContainer: {
     flex: 1,
   },
-  song: {
-    fontSize: 20,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
   album: {
-    textAlign: 'center',
+    fontSize: 10,
+    marginBottom: 8,
+    marginLeft: 5
+  },
+  song: {
+    fontSize: 13,
+    marginLeft: 5
   },
   thumbnail: {
     width: 60,
     height: 60,
+  },
+  listView: {
+  paddingTop: 20,
+  backgroundColor: '#F5FCFF',
   },
 });
 
