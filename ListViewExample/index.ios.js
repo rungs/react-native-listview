@@ -12,15 +12,18 @@ import {
   View,
   Image
 } from 'react-native';
-import MockData from './mockdata';
+import mockdata from './mockdata'
 
 class ListViewExample extends Component {
   render() {
-    return (
-      <View style={styles.container}>
-
-      </View>
-    );
+    var data = mockdata[0];
+     return (
+       <View style={styles.container}>
+         <Text>{data.trackName}</Text>
+         <Text>{data.collectionName}</Text>
+         <Image source={{uri: data.artworkUrl60}} />
+       </View>
+     );
   }
 }
 
