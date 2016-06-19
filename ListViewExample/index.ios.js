@@ -14,23 +14,51 @@ import {
   ListView,
 } from 'react-native';
 import mockdata from './mockdata';
+import SearchBar from 'react-native-search-bar';
 
 class ListViewExample extends Component {
   constructor(props){
     super(props);
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = { dataSource: ds.cloneWithRows(mockdata),
+    this.onChangeText = this.onChangeText.bind(this);
+    this.onCancelButtonPress = this.onCancelButtonPress.bind(this);
+    this.state = { dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
     }
   }
 
   render() {
      return (
-       <ListView
-       dataSource={this.state.dataSource}
-       renderRow={this.renderSong}
-       style={styles.listView}
-       />
+       <View>
+         <SearchBar
+           placeholder='Search'
+           onChangeText={this.onChangeText}
+           onCancelButtonPress={this.onCancelButtonPress}/>
+         <ListView
+         dataSource={this.state.dataSource}
+         renderRow={this.renderSong}
+         style={styles.listView} />
+       </View>
      );
+  }
+
+    componentDidMount() {
+      this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(mockdata),
+
+      });
+  }
+
+  onChangeText(e) {
+      this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(mockdata.filter((item) =>
+              item.trackName.toLowerCase().includes(e.toLowerCase()))),
+      });
+  }
+
+
+  onCancelButtonPress() {
+      this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(mockdata),
+      });
   }
 
   renderSong(data){
